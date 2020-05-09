@@ -4,14 +4,6 @@ const express = require('express');
 //Run express
 const app = express();
 
-//load route files
-const project_routes = require('./routes/index');
-app.use('/api', project_routes);
-
-//middlewares
-const { MApp } = require('./middlewares/index');
-app.use( MApp );
-
 //CORS
 //Configure headers and cors
 app.use((req, res, next) => {
@@ -21,6 +13,15 @@ app.use((req, res, next) => {
     res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
     next();
 });
+
+//load route files
+const project_routes = require('./routes/index');
+app.use('/api', project_routes);
+
+//middlewares
+const { MApp } = require('./middlewares/index');
+app.use( MApp );
+
 
 //Export module
 module.exports = app;
