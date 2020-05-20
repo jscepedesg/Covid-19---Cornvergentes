@@ -86,4 +86,34 @@ app.get('/recordCount/:id', (req, res) => {
 
 });
 
+app.get('/recordUser/:id', (req, res) => {
+    let id = req.params.id;
+    Record.find({idUser: id})
+    .populate('idSymptoms', 'name')
+    .populate('idUser', 'firstName')
+    .exec((err, record) => {
+        if(err) {
+            return res.status(400).json({
+                ok: false,
+                err
+            });
+        }
+        Record.count({idSymptoms: id}, (err, count) => {
+            if(err) {
+                return res.status(400).json({
+                    ok: false,
+                    err
+                });
+            }
+
+            res.json({
+                ok: true,
+                record,
+                howMany: count
+            });
+        });
+    });
+
+});
+
 module.exports = app;
